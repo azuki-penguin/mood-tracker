@@ -1,6 +1,7 @@
 <script>
   import Header from "./Header.svelte";
   import Footer from "./Footer.svelte";
+  import "@fortawesome/fontawesome-free/css/all.min.css";
 </script>
 
 <div class="app-container">
