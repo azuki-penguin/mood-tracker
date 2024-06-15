@@ -1,9 +1,19 @@
 <script lang="ts">
+    import { createEventDispatcher } from "svelte";
+
     export let moodIcon: string;
     export let moodText: string;
+    export let group: string;
+    $: isSelected = moodText === group;
+
+    const dispatcher = createEventDispatcher();
+    const clickDispatcher = () => {
+        group = moodText;
+        dispatcher("click");
+    };
 </script>
 
-<button>
+<button class:isSelected on:click={clickDispatcher}>
     <i class="mood-icon {moodIcon}" />
     <span>{moodText}</span>
 </button>
@@ -21,6 +31,10 @@
 
         font-size: 2.5rem;
         color: #484848;
+    }
+
+    button.isSelected {
+        color: #007bff;
     }
 
     .mood-icon {

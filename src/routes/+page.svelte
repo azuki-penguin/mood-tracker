@@ -1,6 +1,16 @@
 <script>
+    import { goto } from "$app/navigation";
     import Button from "$lib/components/Button.svelte";
     import MoodButton from "$lib/components/MoodButton.svelte";
+
+    let group = "";
+    const chooseMood = () => {
+        console.log(`Your mood is ${group}`);
+    };
+
+    const moveToChart = () => {
+        goto("/chart");
+    };
 </script>
 
 <div class="app-container">
@@ -9,14 +19,36 @@
         <MoodButton
             moodText="Excellent"
             moodIcon="fa-regular fa-face-laugh-beam"
+            bind:group
+            on:click={chooseMood}
         />
-        <MoodButton moodText="Good" moodIcon="fa-regular fa-face-smile-beam" />
-        <MoodButton moodText="Fine" moodIcon="fa-regular fa-face-smile" />
-        <MoodButton moodText="Feel Down" moodIcon="fa-regular fa-face-frown" />
-        <MoodButton moodText="Depressed" moodIcon="fa-regular fa-face-dizzy" />
+        <MoodButton
+            moodText="Good"
+            moodIcon="fa-regular fa-face-smile-beam"
+            bind:group
+            on:click={chooseMood}
+        />
+        <MoodButton
+            moodText="Fine"
+            moodIcon="fa-regular fa-face-smile"
+            bind:group
+            on:click={chooseMood}
+        />
+        <MoodButton
+            moodText="Feel Down"
+            moodIcon="fa-regular fa-face-frown"
+            bind:group
+            on:click={chooseMood}
+        />
+        <MoodButton
+            moodText="Depressed"
+            moodIcon="fa-regular fa-face-dizzy"
+            on:click={chooseMood}
+            bind:group
+        />
     </div>
 
-    <Button label="move to mood chart" />
+    <Button label="move to mood chart" on:click={moveToChart} />
 </div>
 
 <style>

@@ -1,8 +1,15 @@
 <script lang="ts">
+    import { createEventDispatcher } from "svelte";
+
     export let label = "";
+
+    const dispatcher = createEventDispatcher();
+    const clickDispatcher = () => {
+        dispatcher("click");
+    };
 </script>
 
-<button>{label}</button>
+<button on:click={clickDispatcher}>{label}</button>
 
 <style>
     button {
