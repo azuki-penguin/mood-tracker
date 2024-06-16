@@ -12,6 +12,7 @@
     } from "chart.js";
     import Button from "$lib/components/Button.svelte";
     import DatePicker from "$lib/components/DatePicker.svelte";
+    import { goto } from "$app/navigation";
 
     const data = {
         labels: Array.from(new Array(5), (_, i) => i),
@@ -27,6 +28,10 @@
         LineElement,
         PointElement,
     );
+
+    const moveToRoot = () => {
+        goto("/");
+    };
 </script>
 
 <div class="app-container">
@@ -38,7 +43,7 @@
     <div class="mood-chart-container">
         <Line {data} options={{ responsive: true }} />
     </div>
-    <Button label="How do you feel now?" />
+    <Button label="How do you feel now?" on:click={moveToRoot} />
 </div>
 
 <style>
