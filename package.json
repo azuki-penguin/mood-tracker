@@ -27,6 +27,7 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"@formkit/tempo": "^0.1.1",
 		"@fortawesome/fontawesome-free": "^6.5.2",
 		"chart.js": "^4.4.3",
 		"svelte-chartjs": "^3.1.5"
