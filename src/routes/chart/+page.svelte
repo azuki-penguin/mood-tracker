@@ -1,36 +1,16 @@
 <script lang="ts">
-    import { Line } from "svelte-chartjs";
-    import {
-        Chart as ChartJS,
-        Title,
-        Tooltip,
-        Legend,
-        LineElement,
-        LinearScale,
-        PointElement,
-        CategoryScale,
-    } from "chart.js";
     import Button from "$lib/components/Button.svelte";
     import DatePicker from "$lib/components/DatePicker.svelte";
     import { goto } from "$app/navigation";
-
-    const data = {
-        labels: Array.from(new Array(5), (_, i) => i),
-        datasets: [{ label: "label", data: [1, 2, 3, 4, 5] }],
-    };
-
-    ChartJS.register(
-        Title,
-        CategoryScale,
-        LinearScale,
-        Tooltip,
-        Legend,
-        LineElement,
-        PointElement,
-    );
+    import MoodChart from "$lib/components/MoodChart.svelte";
 
     const moveToRoot = () => {
         goto("/");
+    };
+
+    let date: Date;
+    const changeDate = (event: CustomEvent<Date>) => {
+        date = event.detail;
     };
 </script>
 
@@ -38,10 +18,10 @@
     <h1>Mood Chart</h1>
     <div class="date-form">
         <i class="fa-solid fa-calendar-day" />
-        <DatePicker />
+        <DatePicker on:change={changeDate} />
     </div>
     <div class="mood-chart-container">
-        <Line {data} options={{ responsive: true }} />
+        <MoodChart bind:startAt={date} />
     </div>
     <Button label="How do you feel now?" on:click={moveToRoot} />
 </div>
