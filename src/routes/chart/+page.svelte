@@ -45,4 +45,8 @@
         color: #888888;
         font-size: 0.9rem;
     }
+
+    .mood-chart-container {
+        min-height: 240px;
+    }
 </style>

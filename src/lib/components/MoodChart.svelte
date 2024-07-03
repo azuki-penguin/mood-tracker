@@ -10,6 +10,7 @@
         PointElement,
         CategoryScale,
         TimeScale,
+        Colors,
         type ChartOptions,
         type ChartData,
         type Point,
@@ -27,6 +28,7 @@
         LineElement,
         PointElement,
         TimeScale,
+        Colors,
     );
 
     export let startAt = dayStart(new Date());
@@ -76,6 +78,7 @@
     };
     const options: ChartOptions<"line"> = {
         responsive: true,
+        maintainAspectRatio: false,
         scales: {
             x: {
                 type: "time",
