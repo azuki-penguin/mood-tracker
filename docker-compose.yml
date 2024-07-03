@@ -1,0 +1,18 @@
+services:
+  mongo:
+    build:
+      context: ./docker/mongo
+      args:
+        MONGO_PORT: ${MONGO_PORT:-27017}
+        LANG: ${LANG}
+    restart: always
+    environment:
+      MONGO_INITDB_DATABASE: $MONGO_DATABASE
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_ROOT_USERNAME:-root}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_ROOT_PASSWORD:-password}
+      MONGO_USERNAME: ${MONGO_USERNAME}
+      MONGO_PASSWORD: ${MONGO_PASSWORD}
+
+    ports:
+      - ${MONGO_PORT:-27017}:27017
+
