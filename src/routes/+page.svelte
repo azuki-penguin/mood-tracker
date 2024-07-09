@@ -1,11 +1,18 @@
 <script>
     import { goto } from "$app/navigation";
     import Button from "$lib/components/Button.svelte";
+    import Textarea from "$lib/components/Textarea.svelte";
     import MoodButton from "$lib/components/MoodButton.svelte";
 
     let group = "";
     const chooseMood = () => {
         console.log(`Your mood is ${group}`);
+    };
+
+    let notes = '';
+
+    const submit = () => {
+        console.log({ group, notes });
     };
 
     const moveToChart = () => {
@@ -48,6 +55,12 @@
         />
     </div>
 
+    <div class="mood-notes">
+        <Textarea label="notes" bind:value={notes} />
+    </div>
+
+    <Button label="Submit" on:click={submit} />
+
     <Button label="move to mood chart" on:click={moveToChart} />
 </div>
 
@@ -71,6 +84,10 @@
 
     .mood-button-container {
         display: grid;
-        row-gap: 20px;
+        row-gap: 16px;
+    }
+
+    .mood-notes {
+        width: 60%;
     }
 </style>

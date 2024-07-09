@@ -22,14 +22,14 @@
     button {
         display: flex;
         align-items: center;
-        gap: 20px;
+        gap: 10px;
         padding: 10px 20px;
 
         border: none;
         border-radius: 15px;
         box-shadow: 2px 4px 6px #888888;
 
-        font-size: 2.5rem;
+        font-size: 2.2rem;
         color: #484848;
     }
 
@@ -38,6 +38,6 @@
     }
 
     .mood-icon {
-        font-size: 3rem;
+        font-size: 2.48rem;
     }
 </style>
