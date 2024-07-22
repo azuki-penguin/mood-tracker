@@ -1,14 +1,16 @@
 <script lang="ts">
+    import type { Mood } from "$lib/models/Mood";
     import { createEventDispatcher } from "svelte";
 
     export let moodIcon: string;
     export let moodText: string;
-    export let group: string;
-    $: isSelected = moodText === group;
+    export let mood: Mood;
+    export let group: Mood;
+    $: isSelected = mood.equals(group);
 
     const dispatcher = createEventDispatcher();
     const clickDispatcher = () => {
-        group = moodText;
+        group = mood;
         dispatcher("click");
     };
 </script>

@@ -1,10 +1,11 @@
-<script>
+<script lang="ts">
     import { goto } from "$app/navigation";
     import Button from "$lib/components/Button.svelte";
     import Textarea from "$lib/components/Textarea.svelte";
     import MoodButton from "$lib/components/MoodButton.svelte";
+    import { Mood } from "$lib/models/Mood";
 
-    let group = "";
+    let group: Mood;
     const chooseMood = () => {
         console.log(`Your mood is ${group}`);
     };
@@ -24,30 +25,35 @@
     <h1 class="title">How Do You Feel Now?</h1>
     <div class="mood-button-container">
         <MoodButton
+            mood={Mood.excellent}
             moodText="Excellent"
             moodIcon="fa-regular fa-face-laugh-beam"
             bind:group
             on:click={chooseMood}
         />
         <MoodButton
+            mood={Mood.good}
             moodText="Good"
             moodIcon="fa-regular fa-face-smile-beam"
             bind:group
             on:click={chooseMood}
         />
         <MoodButton
+            mood={Mood.fine}
             moodText="Fine"
             moodIcon="fa-regular fa-face-smile"
             bind:group
             on:click={chooseMood}
         />
         <MoodButton
+            mood={Mood.feelDown}
             moodText="Feel Down"
             moodIcon="fa-regular fa-face-frown"
             bind:group
             on:click={chooseMood}
         />
         <MoodButton
+            mood={Mood.depressed}
             moodText="Depressed"
             moodIcon="fa-regular fa-face-dizzy"
             on:click={chooseMood}

@@ -32,4 +32,8 @@ export class Mood {
     public getValue() {
         return this.value;
     }
+
+    public equals(other?: Mood) {
+        return this.id === other?.id && this.value === other?.value;
+    }
 }
