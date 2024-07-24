@@ -5,6 +5,10 @@
     import MoodButton from "$lib/components/MoodButton.svelte";
     import { Mood } from "$lib/models/Mood";
 
+    let errorMessage = '';
+    $: hasError = errorMessage !== '';
+    let isSaved = false;
+
     let group: Mood;
     const chooseMood = () => {
         console.log(`Your mood is ${group}`);
@@ -12,8 +16,27 @@
 
     let notes = '';
 
-    const submit = () => {
-        console.log({ group, notes });
+    const submit = async () => {
+        if (!group) {
+            errorMessage = 'Choose your mood.';
+            return;
+        }
+
+        const response = await fetch('/', {
+            method: 'POST',
+            body: JSON.stringify({
+                notes,
+                mood: group?.getValue(),
+            }),
+        });
+
+        if (!response.ok) {
+            errorMessage = 'Failed to save mood.';
+            return;
+        }
+
+        isSaved = true;
+        errorMessage = '';
     };
 
     const moveToChart = () => {
@@ -24,6 +47,9 @@
 <div class="app-container">
     <h1 class="title">How Do You Feel Now?</h1>
     <div class="mood-button-container">
+        {#if hasError}
+        <div class="error-message">ERROR: {errorMessage}</div>
+        {/if}
         <MoodButton
             mood={Mood.excellent}
             moodText="Excellent"
@@ -65,7 +91,12 @@
         <Textarea label="notes" bind:value={notes} />
     </div>
 
-    <Button label="Submit" on:click={submit} />
+    <div class="save-button">
+        <Button label="Submit" on:click={submit} />
+        {#if isSaved}
+        <div class="save-message">Saved.</div>
+        {/if}
+    </div>
 
     <Button label="move to mood chart" on:click={moveToChart} />
 </div>
@@ -95,5 +126,22 @@
 
     .mood-notes {
         width: 60%;
+    }
+
+    .save-button {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 5px;
+    }
+
+    .save-button  > .save-message {
+        font-weight: bold;
+    }
+
+    .error-message {
+        color: #ff0000;
+        font-weight: bold;
+        font-size: 1.2rem;
     }
 </style>
