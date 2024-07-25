@@ -3,12 +3,30 @@
     import DatePicker from "$lib/components/DatePicker.svelte";
     import { goto } from "$app/navigation";
     import MoodChart from "$lib/components/MoodChart.svelte";
+    import { format } from "@formkit/tempo";
+
+    type MoodRecord = {
+        id: string;
+        mood: number;
+        note: string|null;
+        createdAt: string;
+    };
 
     const moveToRoot = () => {
         goto("/");
     };
 
     let date: Date;
+
+    const loadMoodData = async () => {
+        const params = new URLSearchParams({
+            date: format(date, 'YYYY-MM-DD'),
+        });
+        const response = await fetch(`/chart?${params}`);
+        const moodRecords: MoodRecord[] = await response.json();
+        return moodRecords;
+    };
+
     const changeDate = (event: CustomEvent<Date>) => {
         date = event.detail;
     };
