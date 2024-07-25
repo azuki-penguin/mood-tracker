@@ -27,9 +27,13 @@
         return moodRecords;
     };
 
-    const changeDate = (event: CustomEvent<Date>) => {
+    const changeDate = async (event: CustomEvent<Date>) => {
         date = event.detail;
+        moodRecords = await loadMoodData();
     };
+
+    export let data: { list: MoodRecord[] };
+    let moodRecords = data.list;
 </script>
 
 <div class="app-container">
@@ -39,7 +43,7 @@
         <DatePicker on:change={changeDate} />
     </div>
     <div class="mood-chart-container">
-        <MoodChart bind:startAt={date} />
+        <MoodChart bind:startAt={date} bind:records={moodRecords} />
     </div>
     <Button label="How do you feel now?" on:click={moveToRoot} />
 </div>

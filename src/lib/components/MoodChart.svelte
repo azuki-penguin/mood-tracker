@@ -16,8 +16,15 @@
         type Point,
     } from "chart.js";
     import "chartjs-adapter-moment";
+    import { date, dayStart } from "@formkit/tempo";
     import { Mood } from "$lib/models/Mood";
-    import { addDay, addHour, dayStart } from "@formkit/tempo";
+
+    type MoodRecord = {
+        id: string;
+        mood: number;
+        note: string|null;
+        createdAt: string;
+    };
 
     ChartJS.register(
         Title,
@@ -31,42 +38,13 @@
         Colors,
     );
 
+    export let records: MoodRecord[] = [];
     export let startAt = dayStart(new Date());
     const generatePointsData = (): Point[] => {
-        return [
-            {
-                x: addHour(addDay(startAt, 0), 7).getTime(),
-                y: Mood.fine.getValue(),
-            },
-            {
-                x: addHour(addDay(startAt, 0), 13).getTime(),
-                y: Mood.good.getValue(),
-            },
-            {
-                x: addHour(addDay(startAt, 1), 12).getTime(),
-                y: Mood.fine.getValue(),
-            },
-            {
-                x: addHour(addDay(startAt, 2), 18).getTime(),
-                y: Mood.feelDown.getValue(),
-            },
-            {
-                x: addHour(addDay(startAt, 3), 20).getTime(),
-                y: Mood.depressed.getValue(),
-            },
-            {
-                x: addHour(addDay(startAt, 4), 12).getTime(),
-                y: Mood.good.getValue(),
-            },
-            {
-                x: addHour(addDay(startAt, 5), 15).getTime(),
-                y: Mood.good.getValue(),
-            },
-            {
-                x: addHour(addDay(startAt, 6), 23).getTime(),
-                y: Mood.excellent.getValue(),
-            },
-        ];
+        return records.map<Point>((x) => ({
+            x: date(x.createdAt).getTime(),
+            y: x.mood,
+        }));
     };
     const data: ChartData<"line", Point[]> = {
         datasets: [
@@ -94,7 +72,9 @@
                     stepSize: 1,
                     autoSkip: false,
                     callback(value) {
-                        switch (value as number) {
+                        // Ignore floating point
+                        const y = Number.parseInt(String(value));
+                        switch (y) {
                             case 2:
                                 return "Excellent";
                             case 1:
@@ -110,6 +90,8 @@
                         }
                     },
                 },
+                min: Mood.depressed.getValue(),
+                max: Mood.excellent.getValue(),
             },
         },
     };
