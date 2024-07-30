@@ -60,3 +60,63 @@ export const sendPasswordlessLink = async (email: string, state: string, redirec
         });
     }
 };
+
+type Auth0TokenResponseBody = {
+    access_token: string;
+    id_token: string;
+    scope: string;
+    expires_in: number;
+    token_type: string;
+};
+
+export const getToken = async (code: string, redirectUri: string) => {
+    const params = new URLSearchParams();
+    params.set('grant_type', 'authorization_code');
+    params.set('client_id', env.AUTH0_CLIENT_ID);
+    params.set('client_secret', env.AUTH0_CLIENT_SECRET);
+    params.set('code', code);
+    params.set('redirect_uri', redirectUri);
+    const url = `https://${env.AUTH0_DOMAIN}/oauth/token`;
+    const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+            'content-type': 'application/x-www-form-urlencoded',
+        },
+        body: params,
+    });
+
+    const json = await response.json();
+    if (response.ok) {
+        return json as Auth0TokenResponseBody;
+    } else {
+        console.error(json);
+        throw new Error('Auth0 API error');
+    }
+};
+
+type Auth0ProfileResponseBody = {
+    sub: string;
+    nickname: string;
+    name: string;
+    picture: string;
+    updated_at: string;
+    email: string;
+    email_verified: boolean;
+};
+
+export const getProfile = async (token: Auth0TokenResponseBody) => {
+    const url = `https://${env.AUTH0_DOMAIN}/userinfo`;
+    const response = await fetch(url, {
+        headers: {
+            authorization: `Bearer ${token.access_token}`,
+        },
+    });
+
+    const json = await response.json();
+    if (response.ok) {
+        return json as Auth0ProfileResponseBody;
+    } else {
+        console.error(json);
+        throw new Error('Auth0 API error');
+    }
+};
