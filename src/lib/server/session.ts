@@ -13,7 +13,7 @@ type CreateSessionInput = {
     email: string;
 };
 
-type Session = CreateSessionInput & {
+export type Session = CreateSessionInput & {
     _id: ObjectId
     expiresAt: number;
 }
@@ -27,4 +27,24 @@ export const createSession = async (data: CreateSessionInput) => {
     };
     await database.collection('sessions').insertOne(session);
     return sessionId.toString();
+};
+
+export const findSession = async (sessionId: string) => {
+    const session = await database.collection('sessions')
+        .findOne<Session>({ _id: new ObjectId(sessionId) });
+    if (!session) {
+        return null;
+    }
+
+    if (session.expiresAt < Date.now()) {
+        await deleteSession(sessionId);
+        return null;
+    }
+
+    return session;
+};
+
+export const deleteSession = async (sessionId: string) => {
+    await database.collection('sessions')
+        .deleteOne({ _id: new ObjectId(sessionId) });
 };
