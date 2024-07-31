@@ -14,12 +14,14 @@ type MoodRecord = MoodData & {
 
 type SearchMoodInput = {
     date: Date;
+    userId: string;
 };
 
 export const fetchMoodList = async (input: SearchMoodInput) => {
     const from = dayStart(input.date);
     const to = dayEnd(addDay(from, 7));
     const mood = await database.collection('moodLogs').find({
+        userId: input.userId,
         createdAt: {
             $gte: from,
             $lte: to,
