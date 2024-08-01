@@ -1,3 +1,4 @@
+import type { Weather } from '$lib/models/Weather';
 import { database } from '$lib/server/mongodb';
 import { addDay, dayEnd, dayStart } from '@formkit/tempo';
 
@@ -36,10 +37,11 @@ export const fetchMoodList = async (input: SearchMoodInput) => {
     })).toArray();
 };
 
-export const addMood = async (moodData: MoodData) =>  {
+export const addMood = async (moodData: MoodData, weather?: Weather) =>  {
     const { acknowledged, insertedId } = await database.collection('moodLogs')
         .insertOne({
             ...moodData,
+            ...weather,
             createdAt: new Date(),
         });
     if (acknowledged) {

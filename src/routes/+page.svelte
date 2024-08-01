@@ -4,6 +4,8 @@
     import Textarea from "$lib/components/Textarea.svelte";
     import MoodButton from "$lib/components/MoodButton.svelte";
     import { Mood } from "$lib/models/Mood";
+    import type { Coordinates } from "$lib/models/Coordinates";
+    import { browser } from "$app/environment";
 
     let errorMessage = '';
     $: hasError = errorMessage !== '';
@@ -15,6 +17,15 @@
     };
 
     let notes = '';
+    let coord: Coordinates;
+    if (browser) {
+        navigator.geolocation.getCurrentPosition((position) => {
+            coord = {
+                longitude: position.coords.longitude,
+                latitude: position.coords.latitude,
+            };
+        });
+    }
 
     const submit = async () => {
         if (!group) {
@@ -26,6 +37,7 @@
             method: 'POST',
             body: JSON.stringify({
                 notes,
+                coord,
                 mood: group?.getValue(),
             }),
         });
