@@ -19,8 +19,8 @@ type SearchMoodInput = {
 };
 
 export const fetchMoodList = async (input: SearchMoodInput) => {
-    const from = dayStart(input.date);
-    const to = dayEnd(addDay(from, 7));
+    const to = dayEnd(input.date);
+    const from = dayStart(addDay(to, -7));
     const mood = await database.collection('moodLogs').find({
         userId: input.userId,
         createdAt: {
