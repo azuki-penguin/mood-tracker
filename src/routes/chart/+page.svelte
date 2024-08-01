@@ -41,7 +41,7 @@
         <DatePicker bind:date={date} on:change={changeDate} />
     </div>
     <div class="mood-chart-container">
-        <MoodChart bind:startAt={date} bind:records={moodRecords} />
+        <MoodChart bind:records={moodRecords} />
     </div>
     <Button label="How do you feel now?" on:click={moveToRoot} />
 </div>

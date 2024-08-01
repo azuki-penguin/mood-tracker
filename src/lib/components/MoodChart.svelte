@@ -16,7 +16,7 @@
         type Point,
     } from "chart.js";
     import "chartjs-adapter-moment";
-    import { date, dayStart } from "@formkit/tempo";
+    import { date } from "@formkit/tempo";
     import { Mood } from "$lib/models/Mood";
 
     type MoodRecord = {
@@ -39,18 +39,15 @@
     );
 
     export let records: MoodRecord[] = [];
-    export let startAt = dayStart(new Date());
-    const generatePointsData = (): Point[] => {
-        return records.map<Point>((x) => ({
-            x: date(x.createdAt).getTime(),
-            y: x.mood,
-        }));
-    };
+    $: points = records.map<Point>((x) => ({
+        x: date(x.createdAt).getTime(),
+        y: x.mood,
+    }));
     const data: ChartData<"line", Point[]> = {
         datasets: [
             {
                 label: "Mood",
-                data: generatePointsData(),
+                data: points,
             },
         ],
     };
@@ -97,10 +94,9 @@
     };
     let chart: ChartJS<"line", Point[]>;
     $: {
-        const _date = startAt; // Watch startAt change to update chart.
         if (chart) {
             chart.data = {
-                datasets: [{ label: "Mood", data: generatePointsData() }],
+                datasets: [{ label: "Mood", data: points }],
             };
             chart.update();
         }
