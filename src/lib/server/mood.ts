@@ -4,7 +4,7 @@ import { addDay, dayEnd, dayStart } from '@formkit/tempo';
 
 type MoodData = {
     mood: number;
-    note?: string;
+    notes?: string;
     userId: string;
 };
 
@@ -30,7 +30,7 @@ export const fetchMoodList = async (input: SearchMoodInput) => {
     });
     return await mood.map<MoodRecord>((x) => ({
         mood: x.mood,
-        note: x.note,
+        notes: x.note,
         userId: x.userId,
         createdAt: x.createdAt,
         id: x._id.toString(),

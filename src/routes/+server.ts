@@ -7,7 +7,7 @@ import { getCurrentWeather } from "$lib/server/weather";
 
 type RequestMoodData = {
     mood: number;
-    note?: string;
+    notes?: string;
     coord?: Coordinates;
 };
 
@@ -24,7 +24,7 @@ export const POST: RequestHandler = async ({ request, locals }) => {
 
     const mood = await addMood({
         mood: body.mood,
-        note: body.note,
+        notes: body.notes,
         userId: locals.currentUser.userId,
     }, currentWeather);
     return new Response(JSON.stringify(mood));
