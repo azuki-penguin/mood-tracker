@@ -1,19 +1,25 @@
 <script lang="ts">
-    import { parse } from "@formkit/tempo";
-    import { createEventDispatcher } from "svelte";
+    import { format, parse } from "@formkit/tempo";
+    import { createEventDispatcher, onMount } from "svelte";
 
-    let date: string;
+    let inputDate: string;
+    export let date: Date;
 
-    const dispatcher = createEventDispatcher<{ change: Date }>();
+    const dispatcher = createEventDispatcher();
     const changeEventDispatcher = () => {
-        if (!date) {
+        if (!inputDate) {
             return;
         }
-        dispatcher("change", parse(date));
+        date = parse(inputDate);
+        dispatcher("change");
     };
+
+    onMount(() => {
+        inputDate = format(date, 'YYYY-MM-DD');
+    });
 </script>
 
-<input type="date" bind:value={date} on:blur={changeEventDispatcher} />
+<input type="date" bind:value={inputDate} on:blur={changeEventDispatcher} />
 
 <style>
     input[type="date"] {

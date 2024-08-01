@@ -16,8 +16,6 @@
         goto("/");
     };
 
-    let date: Date;
-
     const loadMoodData = async () => {
         const params = new URLSearchParams({
             date: format(date, 'YYYY-MM-DD'),
@@ -27,20 +25,20 @@
         return moodRecords;
     };
 
-    const changeDate = async (event: CustomEvent<Date>) => {
-        date = event.detail;
+    const changeDate = async () => {
         moodRecords = await loadMoodData();
     };
 
-    export let data: { list: MoodRecord[] };
+    export let data: { list: MoodRecord[], date: Date };
     let moodRecords = data.list;
+    let date = data.date;
 </script>
 
 <div class="app-container">
     <h1>Mood Chart</h1>
     <div class="date-form">
         <i class="fa-solid fa-calendar-day" />
-        <DatePicker on:change={changeDate} />
+        <DatePicker bind:date={date} on:change={changeDate} />
     </div>
     <div class="mood-chart-container">
         <MoodChart bind:startAt={date} bind:records={moodRecords} />

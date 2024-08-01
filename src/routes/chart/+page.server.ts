@@ -8,5 +8,5 @@ export const load: PageServerLoad = async ({ locals }) => {
     }
     const now = new Date();
     const list = await fetchMoodList({ date: now, userId: locals.currentUser.userId });
-    return { list };
+    return { list, date: now };
 };
