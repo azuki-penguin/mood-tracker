@@ -49,10 +49,12 @@ export const getCurrentWeather = async (coord: Coordinates) => {
     }
 
     const weatherApiResponse = json as OpenWeatherResponseBody
+    const iconCode = weatherApiResponse.weather[0].icon;
     const weather: Weather = {
         id: weatherApiResponse.weather[0].id,
         weather: weatherApiResponse.weather[0].main,
         description: weatherApiResponse.weather[0].description,
+        iconUrl: iconCode ? `https://openweathermap.org/img/wn/${iconCode}.png` : undefined,
         temperature: weatherApiResponse.main.temp,
         pressure: weatherApiResponse.main.pressure,
         humidity: weatherApiResponse.main.humidity,
