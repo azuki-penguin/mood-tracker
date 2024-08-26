@@ -68,5 +68,7 @@
 
     .mood-chart-container {
         min-height: 240px;
+        padding: 10px;
+        box-shadow: 2px 2px 6px #888888;
     }
 </style>
